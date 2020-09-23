@@ -9,5 +9,5 @@ Route::get('/', function () {
 
 Route::get('/home', 'HomeController@index');
 
-Route::post('/home', 'HomeController@store');
+Route::post('/post', 'HomeController@store');
 

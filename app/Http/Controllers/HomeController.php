@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
 
 class HomeController extends Controller
 {
@@ -13,9 +14,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-        //SELECT
-      return view('home');
+        $posts = Post::all();
+        return view('home', compact('posts'));
     }
 
     /**
@@ -36,10 +36,15 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //INSERT
-        $nome = $request->nome;
-        return view('home', ['nome' => $nome]);
+    {   
+        $validate = $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'author' => 'required'
+        ]);
+
+        $posts = Post::create($validate);
+        return redirect('home')->with('success', 'Salvo');
     }
 
     /**
