@@ -3,10 +3,34 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Social;
+use Illuminate\Support\Facades\Auth;
 
-class HomeController extends Controller
+class AdminController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth', ['except' => [
+            'login',
+            'loginAction',
+            'index'
+        ]]);
+    }
+
+    public function login()
+    {
+        return view('admin.login');
+    }
+
+    public function loginAction(Request $request)
+    {
+        $dados = $request->only('email', 'password');
+        if(Auth::attempt($dados)){
+            return redirect('/admin');
+        }else{
+            return redirect('/admin/login');
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +38,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('admin.home');
     }
 
     /**
@@ -24,7 +48,6 @@ class HomeController extends Controller
      */
     public function create()
     {
-        //VIEW
         //
     }
 
@@ -35,15 +58,8 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
-        $validate = $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'author' => 'required'
-        ]);
-
-        $posts = Post::create($validate);
-        return redirect('home')->with('success', 'Salvo');
+    {
+        //
     }
 
     /**
@@ -52,10 +68,9 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($user)
+    public function show($id)
     {
-        $socials = Social::where('user', $user)->get();
-        return view('init', ['socials' => $socials, 'user' => $user]);
+        //
     }
 
     /**
@@ -66,7 +81,7 @@ class HomeController extends Controller
      */
     public function edit($id)
     {
-        //VIEW
+        //
     }
 
     /**
@@ -78,7 +93,7 @@ class HomeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //UPDATE WHERE
+        //
     }
 
     /**
@@ -89,6 +104,6 @@ class HomeController extends Controller
      */
     public function destroy($id)
     {
-        //DELETE WHERE
+        //
     }
 }

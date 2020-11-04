@@ -1,13 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-// rota /
-Route::get('/', function () {
-    return view('welcome');
+
+Route::get('/', 'HomeController@show');
+
+Route::prefix('/admin')->group(function(){
+
+    Route::get('/', 'AdminController@index');
+    Route::get('/user/create', 'UserController@create');
+    Route::post('/user/create', 'UserController@store');
+    Route::get('/login', 'AdminController@login')->name('login');
+    Route::post('/login', 'AdminController@loginAction');
+
 });
-//rota home
 
 Route::get('/home', 'HomeController@index');
 
-Route::post('/post', 'HomeController@store');
+Route::get('/{user}', 'HomeController@show');
 

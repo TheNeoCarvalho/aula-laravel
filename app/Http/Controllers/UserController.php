@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Social;
+use App\User;
 
-class HomeController extends Controller
+class UserController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +15,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        //
     }
 
     /**
@@ -24,8 +25,7 @@ class HomeController extends Controller
      */
     public function create()
     {
-        //VIEW
-        //
+        return view('admin.create');
     }
 
     /**
@@ -35,15 +35,17 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
-        $validate = $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'author' => 'required'
-        ]);
+    {
+        $dados = $request->only('name', 'email', 'avatar', 'password');
+                
+        $user = new User;
+        $user->name = $dados['name'];
+        $user->email = $dados['email'];
+        $user->avatar = $dados['avatar'];
+        $user->password = password_hash($dados['password'], PASSWORD_DEFAULT);
+        $user->save();
 
-        $posts = Post::create($validate);
-        return redirect('home')->with('success', 'Salvo');
+        return redirect('/admin/login');
     }
 
     /**
@@ -52,10 +54,9 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($user)
+    public function show($id)
     {
-        $socials = Social::where('user', $user)->get();
-        return view('init', ['socials' => $socials, 'user' => $user]);
+        //
     }
 
     /**
@@ -66,7 +67,7 @@ class HomeController extends Controller
      */
     public function edit($id)
     {
-        //VIEW
+        //
     }
 
     /**
@@ -78,7 +79,7 @@ class HomeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //UPDATE WHERE
+        //
     }
 
     /**
@@ -89,6 +90,6 @@ class HomeController extends Controller
      */
     public function destroy($id)
     {
-        //DELETE WHERE
+        //
     }
 }
