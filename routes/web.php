@@ -11,6 +11,7 @@ Route::prefix('/admin')->group(function(){
     Route::post('/user/create', 'UserController@store');
     Route::get('/login', 'AdminController@login')->name('login');
     Route::post('/login', 'AdminController@loginAction');
+    Route::get('/logout', 'AdminController@logoutAction');
 
 });
 

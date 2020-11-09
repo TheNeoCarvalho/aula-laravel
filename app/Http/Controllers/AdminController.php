@@ -12,23 +12,29 @@ class AdminController extends Controller
         $this->middleware('auth', ['except' => [
             'login',
             'loginAction',
-            'index'
         ]]);
     }
 
     public function login()
     {
-        return view('admin.login');
+
+ 
+        return view('/admin/login');
     }
 
     public function loginAction(Request $request)
     {
         $dados = $request->only('email', 'password');
-        if(Auth::attempt($dados)){
-            return redirect('/admin');
-        }else{
-            return redirect('/admin/login');
+
+        if (Auth::attempt($dados)) {
+            return redirect()->intended('/admin');
         }
+        
+    }
+
+    public function logoutAction(){
+        Auth::logout();
+        return redirect('/admin/login');
     }
 
     /**
@@ -38,7 +44,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.home');
+
+        $user = Auth::user();
+        return view('admin.home', ['user' => $user]);
     }
 
     /**
